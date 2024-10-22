@@ -1,4 +1,3 @@
-# %%
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -6,12 +5,11 @@ import mne
 from mne.time_frequency import tfr_multitaper, AverageTFRArray, EpochsTFRArray, tfr_array_morlet
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 mne.set_log_level(False)
 sns.set_theme()
 %matplotlib inline
 
-# %%
+# Functions
 def read_file(path, order):
     frame = pd.read_csv(path, delimiter=',\s+', comment='%')
     info = mne.create_info([ 'channel5','channel7','trigger'], ch_types=[ 'eeg','eeg', 'stim'], sfreq=250)
@@ -53,14 +51,11 @@ def plot_epochs(ax, epochs, event, channel, color, label):
     data = epochs[event].get_data(tmin=-1, copy=True)[:, channel, :-1]
     mean, ci = compute_ci(data)
     x = np.arange(data.shape[1]) / 250 - 1
-    
     ax.plot(x, mean, color=color, label=label)
     
-
 def process_finche(files, order):
     epochs = [read_file(x, order) for x in files]
     epochs = mne.concatenate_epochs(epochs)
-
     return epochs
 
 def tf_plotN(epochs, channel, width=0.1, save_name = None):
@@ -118,12 +113,9 @@ def tf_plotN(epochs, channel, width=0.1, save_name = None):
     
     def plot_ERP(epochs, channel=0, save_path=None, ymin=-40, ymax=80):
     fig, ax = plt.subplots(figsize=(18, 10))
-    
-    # Defining subtitles and events for different conditions
     subtitles = ['White Noise', 'BOS', 'Conspecific', 'Reverse BOS', '5K tone']
     events = ['0', '1', '2', '3', '4']
     colors = ['blue', 'green', 'red', 'orange', 'purple']  # Assigning different colors to events
-    
     ax.set_title(save_path, fontsize=19, y=1, pad=20, loc='center')
     
     for i in range(5):
@@ -150,27 +142,23 @@ def tf_plotN(epochs, channel, width=0.1, save_name = None):
     
     plt.show()
     
-    
-# %%
+# Loading data    
 data_directory = 'Path to folder/' 
 
-file1 = data_directory + 'OpenBCI-RAW-2024.Txt'  #
+file1 = data_directory + 'OpenBCI-RAW-2024.Txt'  
 file2 = data_directory + 'OpenBCI-RAW-2024-2.Txt'
 file3 = data_directory + 'OpenBCI-RAW-2024-3.Txt'
 
 epochs = process_finche([file1, file2, file3], [ 5,7, 16])
 
-# %%
+# Spectogrum plots
 tf_plotN(epochs,0,0.25, "CMM")
 tf_plotN(epochs,1,0.25, "HVC")
 
-
-# %%
+# Event Related Potential plots
 plot_ERP(epochs, 0 , "CMM")
 plot_ERP(epochs, 1 , "HVC")
 
-
-# %%
 plot_ERP_error(epochs, 0 , "CMM")
 plot_ERP_erro(epochs, 1 , "HVC")
 
