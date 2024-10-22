@@ -1,4 +1,3 @@
-# %%
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -12,7 +11,6 @@ from itertools import combinations
 mne.set_log_level(False)
 %matplotlib inline
 
-# %%
 def get_level(level):
     if level < 1: return 0
     if level < 2: return 1
@@ -199,10 +197,7 @@ plt.savefig(f'fft{save_path}.eps', format='eps', dpi=700)
 plt.savefig(f'fft{save_path}.png', format='png', dpi=700)
 plt.show()
 
-
-
-
-# %%
+# Loud data
 path = 'Dataset-Sleep/1.txt'
 meta = [(1, 180), (.6, 120), (.4, 120), (.6, 120), (1, 150), (1.5, 150), (2, 150), (0.2,150)]
 data1 = read_file(path, meta)
@@ -227,13 +222,13 @@ path = 'Dataset-Sleep/5.txt' #5 feb
 meta = [(1, 120), (1.5, 120), (2, 120), (1.5, 100), (1, 120), (1.5, 120),(.4, 120),(.6, 120)]
 data5 = read_file(path, meta, offset =180)
 
-# %%
+
 data = [data1, data2, data3, data4, data5]
 low_data = select_epochs(data, '0')
 mid_data = select_epochs(data, '1')
 high_data = select_epochs(data, '2')
 
-# %%
+
 NLC1 = WindowingBDT(low_data[-8:, 0], theta = 100)
 NMC1 = WindowingBDT(mid_data[-8:, 0], theta = 100)
 NHC1 = WindowingBDT(high_data[-8:, 0], theta =100)
@@ -244,7 +239,6 @@ MC1 = [np.count_nonzero(NMC1[i] == 0)/250 for i in range(len(NMC1)) ]
 HC1 = [np.count_nonzero(NHC1[i] == 0)/250 for i in range(len(NHC1)) ]
 
 
-# %%
 NLC2 = WindowingBDT(low_data[-8:, 1], theta = 100)
 NMC2 = WindowingBDT(mid_data[-8:, 1], theta = 100)
 NHC2 = WindowingBDT(high_data[-8:, 1], theta =100)
@@ -255,12 +249,9 @@ MC2 = [np.count_nonzero(NMC2[i] == 0)/250 for i in range(len(NMC2)) ]
 HC2 = [np.count_nonzero(NHC2[i] == 0)/250 for i in range(len(NHC2)) ]
 
 
-# %%
-
 stat, p = stats.friedmanchisquare(LC1, MC1, HC1)
-p
+print(p)
 
-# %%
 
 low = LC1
 medium = MC1
