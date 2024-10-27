@@ -128,7 +128,7 @@ struct Speaker
 
 enum class Type
 {
-    ColoredNoise,
+    WhiteNoise,
     BirdsOwnSong,
     Conspecific,
     ReverseBos,
@@ -137,7 +137,7 @@ enum class Type
 
 String type_name(Type type)
 {
-    if (type == Type::ColoredNoise) return "Colored Noise";
+    if (type == Type::WhiteNoise) return "White Noise";
     if (type == Type::BirdsOwnSong) return "Bird's Own Song";
     if (type == Type::Conspecific) return "Conspecific Song";
     if (type == Type::ReverseBos) return "Reversed BOS";
@@ -147,7 +147,7 @@ String type_name(Type type)
 
 String type_path(Type type)
 {
-    if (type == Type::ColoredNoise) return "color_noise";
+    if (type == Type::WhiteNoise) return "white_noise";
     if (type == Type::BirdsOwnSong) return "song_bos";
     if (type == Type::Conspecific) return "song_con";
     if (type == Type::ReverseBos) return "song_rev";
@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
 
     Map<Type, Samples> songs;
     auto path = argv[1] + String("/");
-    for (auto type : {Type::ColoredNoise, Type::BirdsOwnSong,  //
+    for (auto type : {Type::WhiteNoise, Type::BirdsOwnSong,  //
                       Type::Conspecific, Type::ReverseBos, Type::Tone5k})
         songs[type] = load_audio(path + type_path(type) + ".wav");
 
