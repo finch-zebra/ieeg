@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.5)
+project(Audio LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(SDL2 REQUIRED)
+add_executable(Audio main.cpp AudioFile.h)
+target_include_directories(Audio PUBLIC ${SDL2_INCLUDE_DIRS})
+target_link_libraries(Audio PUBLIC ${SDL2_LIBRARIES})
+# target_link_libraries(Audio PUBLIC wiringPi)
